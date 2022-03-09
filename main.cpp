@@ -112,7 +112,7 @@ private:
 
 public:
     //constructor de initializare
-    Flight(int flightId, const string& departure, const string& destination, int planeType, int duration, vector<FlightSeat> seats) {
+    Flight(int flightId, const string& departure, const string& destination, int planeType, int duration, const vector<FlightSeat>& seats) {
         this->flightId = flightId;
         this->departure = departure;
         this->destination = destination;
