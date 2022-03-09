@@ -17,7 +17,7 @@ public:
     User(){
     }
     //constructor de initializare
-    User(string nume, string cnp, int varsta) {
+    User(const string& nume, const string& cnp, int varsta) {
         this->nume = nume;
         this->cnp = cnp;
         this->varsta = varsta;
@@ -55,7 +55,7 @@ private:
     friend std::ostream& operator<<(std::ostream &strm, const FlightSeat &a);
 
 public:
-    FlightSeat(int id, int type, bool booked, User pasager) {
+    FlightSeat(int id, int type, bool booked, const User& pasager) {
         this->id = id;
         this->type = type;
         this->booked = booked;
@@ -78,7 +78,7 @@ public:
     ~FlightSeat() {
     }
     //metoda
-    int bookSeat(User pasanger_) {
+    int bookSeat(const User& pasanger_) {
         if (booked)
             return -1;
         this->booked = true;
@@ -112,7 +112,7 @@ private:
 
 public:
     //constructor de initializare
-    Flight(int flightId, string departure, string destination, int planeType, int duration, vector<FlightSeat> seats) {
+    Flight(int flightId, const string& departure, const string& destination, int planeType, int duration, vector<FlightSeat> seats) {
         this->flightId = flightId;
         this->departure = departure;
         this->destination = destination;
