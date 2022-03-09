@@ -56,6 +56,7 @@ private:
 
 public:
     FlightSeat(int id, int type, bool booked, User pasager) {
+        this->id = id;
         this->type = type;
         this->booked = booked;
         this->pasager = pasager;
@@ -69,6 +70,7 @@ public:
     }
     //constructor de initializare
     FlightSeat(int id, int type, bool booked) {
+        this->id = id;
         this->type = type;
         this->booked = booked;
     }
@@ -76,11 +78,12 @@ public:
     ~FlightSeat() {
     }
     //metoda
-    int bookSeat(User pasager) {
+    int bookSeat(User pasanger_) {
         if (booked)
             return -1;
         this->booked = true;
-        this->pasager = pasager;
+        this->pasager = pasanger_;
+        return 0;
     }
     //operator =
     FlightSeat& operator=(const FlightSeat& seat)
@@ -119,7 +122,7 @@ public:
     }
     //constructor de copiere
     Flight(const Flight &flight) {
-        this->flightId = flightId;
+        this->flightId = flight.flightId;
         this->departure = flight.departure;
         this->destination = flight.destination;
         this->planeType = flight.planeType;
@@ -132,7 +135,7 @@ public:
     //operator =
     Flight& operator=(const Flight& flight)
     {
-        this->flightId = flightId;
+        this->flightId = flight.flightId;
         this->departure = flight.departure;
         this->destination = flight.destination;
         this->planeType = flight.planeType;
@@ -193,7 +196,7 @@ std::ostream& operator<<(std::ostream &strm, const ReservationSystem &a) {
     for (Flight flight : a.flights) {
         strm << flight << endl;
     }
-    strm << "Uers: ";
+    strm << "User: ";
     for (User user : a.users) {
         strm << user << endl;
     }
