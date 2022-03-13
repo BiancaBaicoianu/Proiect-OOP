@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,44 +5,71 @@
 using namespace std;
 
 class User {
-private:
-    string nume;
-    string cnp;
-    int varsta;
+    std::string name;
+    std::string email;
+    int age;
+    std::string phoneNo;
+    std::string passportNo;
 
     friend std::ostream& operator<<(std::ostream &strm, const User &a);
 
 public:
-    User(){
-    }
+    //functii prieten
+    friend string return_passportNo(User user_);
+    friend string return_phoneNo(User user_);
+
+    User()= default;
     //constructor de initializare
-    User(const string& nume, const string& cnp, int varsta) {
-        this->nume = nume;
-        this->cnp = cnp;
-        this->varsta = varsta;
+    User(const string& name, const string& email, int age, const string& phoneNo, const string& passportNo) {
+        this->name = name;
+        this->email = email;
+        this->age = age;
+        this->phoneNo = phoneNo;
+        this->passportNo = passportNo;
     }
-    //cconstructor de copiere
+
+    //metoda
+    void verify_user(User user_) {
+        if (return_passportNo(user_).size() < 9)
+            std::cout << "You entered an invalid passport number for " << user_ << endl;
+        if (return_phoneNo(user_).size() != 10)
+            std::cout << "You entered an invalid phone number for " << user_ << endl;
+}
+
+    //regula celor 3
+    //constructor de copiere
     User(const User &user) {
-        this->nume = user.nume;
-        this->cnp = user.cnp;
-        this->varsta = user.varsta;
+        this->name = user.name;
+        this->email = user.email;
+        this->age = user.age;
+        this->phoneNo = user.phoneNo;
+        this->passportNo = user.passportNo;
     }
     //destructor
-    ~User() {
-    }
+    ~User() = default;
     //operator =
     User& operator=(const User& user)
     {
-        this->nume = user.nume;
-        this->cnp = user.cnp;
-        this->varsta = user.varsta;
+        this->name = user.name;
+        this->email = user.email;
+        this->age = user.age;
+        this->phoneNo = user.phoneNo;
+        this->passportNo = user.passportNo;
         return *this;
     }
 
 };
+
+string return_passportNo(User user_){
+    return user_.passportNo;
+}
+string return_phoneNo(User user_){
+    return user_.phoneNo;
+}
+
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const User &a) {
-    return strm << "(" << a.nume << ", " << a.cnp << ", " << a.varsta << ")";
+    return strm << "(" << a.name << ", " << a.email << ", " << a.age << ", " << a.phoneNo << ", " << a.passportNo << ")";
 }
 
 class FlightSeat {
@@ -55,6 +81,7 @@ private:
     friend std::ostream& operator<<(std::ostream &strm, const FlightSeat &a);
 
 public:
+    //constructor de initializare
     FlightSeat(int id, int type, bool booked, const User& pasager) {
         this->id = id;
         this->type = type;
@@ -62,27 +89,21 @@ public:
         this->pasager = pasager;
     }
 
+
     FlightSeat(const FlightSeat &seat) {
         this->type = seat.type;
         this->booked = seat.booked;
         this->pasager = seat.pasager;
         this->id = seat.id;
     }
-    //constructor de initializare
-    FlightSeat(int id, int type, bool booked) {
-        this->id = id;
-        this->type = type;
-        this->booked = booked;
-    }
-    //destructor
-    ~FlightSeat() {
-    }
+
+
     //metoda
-    int bookSeat(const User& pasanger_) {
+    int bookSeat(const User& pasager_) {
         if (booked)
             return -1;
         this->booked = true;
-        this->pasager = pasanger_;
+        this->pasager = pasager_;
         return 0;
     }
     //operator =
@@ -206,15 +227,47 @@ std::ostream& operator<<(std::ostream &strm, const ReservationSystem &a) {
 
 int main() {
     ReservationSystem system;
-
+    //economy = 1 ; bussiness = 0
     std::vector<FlightSeat> flightSeats;
-    User adi("Adi", "123456789012", 32);
-    FlightSeat fs1(0, 1, false, adi);
-    flightSeats.push_back(fs1);
-    Flight f1(0, "SUA", "Australia", 1, 240, flightSeats);
+    User user1("Popescu Ion", "popescuion@gmail.com", 32, "0724660071", "006376162");
+    user1.verify_user(user1);
+    User user2("Andronescu Maria Elena", "mariaaaa_elena@yahoo.com", 22, "0726315643", "0031764");
+    user2.verify_user(user2);
+    User user3("Marinescu Rebeca", "rebek_marinescu@gmail.com", 28, "07632032242", "0031249626");
+    user3.verify_user(user3);
 
-    system.addFlight(f1);
-    system.addUser(adi);
+    FlightSeat fs1(012, 1, false, user1);
+    if (fs1.bookSeat(user1) == -1)
+        { std::cout << "You have already booked a seat at this flight!"; }
+    else {
+        flightSeats.push_back(fs1);
+        Flight f1(0, "SUA", "Australia", 1, 240, flightSeats);
+        system.addFlight(f1);
+        system.addUser(user1);
+    }
+
+    FlightSeat fs2(276, 0, false, user2);
+    if (fs2.bookSeat(user2) == -1)
+        { std::cout << "You have already booked a seat at this flight!"; }
+    else {
+        flightSeats.push_back(fs2);
+        Flight f2(2,"Germany", "Russia", 0, 180, flightSeats);
+        system.addFlight(f2);
+        system.addUser(user2);
+    }
+
+    FlightSeat fs3(012,1,true, user3);
+    if (fs3.bookSeat(user3) == -1)
+        { std::cout << "You have already booked a seat at this flight!"<<endl; }
+    else {
+        flightSeats.push_back(fs3);
+        Flight f3(0, "SUA", "Australia", 1, 240, flightSeats);
+        system.addFlight(f3);
+        system.addUser(user3);
+    }
+
 
     cout << system << endl;
 }
+
+
