@@ -15,8 +15,8 @@ class User {
 
 public:
     //functii prieten
-    friend string return_passportNo(User user_);
-    friend string return_phoneNo(User user_);
+    friend string return_passportNo(const User& user_);
+    friend string return_phoneNo(const User& user_);
 
     User()= default;
     //constructor de initializare
@@ -60,10 +60,10 @@ public:
 
 };
 
-string return_passportNo(User user_){
+string return_passportNo(const User& user_){
     return user_.passportNo;
 }
-string return_phoneNo(User user_){
+string return_phoneNo(const User& user_){
     return user_.phoneNo;
 }
 
@@ -238,7 +238,7 @@ int main() {
 
     FlightSeat fs1(012, 1, false, user1);
     if (fs1.bookSeat(user1) == -1)
-        { std::cout << "You have already booked a seat at this flight!"; }
+        { std::cout << "You have already booked a seat!"; }
     else {
         flightSeats.push_back(fs1);
         Flight f1(0, "SUA", "Australia", 1, 240, flightSeats);
