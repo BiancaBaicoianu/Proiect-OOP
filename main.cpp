@@ -29,7 +29,7 @@ public:
     }
 
     //metoda
-    void verify_user(User user_) {
+    void verify_user(const User& user_) {
         if (return_passportNo(user_).size() < 9)
             std::cout << "You entered an invalid passport number for " << user_ << endl;
         if (return_phoneNo(user_).size() != 10)
