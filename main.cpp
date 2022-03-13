@@ -7,7 +7,7 @@ using namespace std;
 class User {
     std::string name;
     std::string email;
-    int age;
+    int age{};
     std::string phoneNo;
     std::string passportNo;
 
@@ -48,15 +48,17 @@ public:
     //destructor
     ~User() = default;
     //operator =
+//    User& operator=(const User& user)
+//    {
+//        this->name = user.name;
+//        this->email = user.email;
+//        this->age = user.age;
+//        this->phoneNo = user.phoneNo;
+//        this->passportNo = user.passportNo;
+//        return *this;
+//    }
     User& operator=(const User& user)
-    {
-        this->name = user.name;
-        this->email = user.email;
-        this->age = user.age;
-        this->phoneNo = user.phoneNo;
-        this->passportNo = user.passportNo;
-        return *this;
-    }
+    = default;
 
 };
 
@@ -107,14 +109,16 @@ public:
         return 0;
     }
     //operator =
+//    FlightSeat& operator=(const FlightSeat& seat)
+//    {
+//        this->type = seat.type;
+//        this->booked = seat.booked;
+//        this->pasager = seat.pasager;
+//        this->id = seat.id;
+//        return *this;
+//    }
     FlightSeat& operator=(const FlightSeat& seat)
-    {
-        this->type = seat.type;
-        this->booked = seat.booked;
-        this->pasager = seat.pasager;
-        this->id = seat.id;
-        return *this;
-    }
+    = default;
 };
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const FlightSeat &a) {
@@ -151,19 +155,20 @@ public:
         this->seats = flight.seats;
     }
     //destructor
-    ~Flight() {
-    }
+    ~Flight() = default;
     //operator =
+//    Flight& operator=(const Flight& flight)
+//    {
+//        this->flightId = flight.flightId;
+//        this->departure = flight.departure;
+//        this->destination = flight.destination;
+//        this->planeType = flight.planeType;
+//        this->duration = flight.duration;
+//        this->seats = flight.seats;
+//        return *this;
+//    }
     Flight& operator=(const Flight& flight)
-    {
-        this->flightId = flight.flightId;
-        this->departure = flight.departure;
-        this->destination = flight.destination;
-        this->planeType = flight.planeType;
-        this->duration = flight.duration;
-        this->seats = flight.seats;
-        return *this;
-    }
+    = default;
 };
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const Flight &a) {
@@ -184,20 +189,21 @@ private:
 
 public:
     //constructor de initializare
-    ReservationSystem() {
-    }
+    ReservationSystem() = default;
     //constructor de copiere
     ReservationSystem(const ReservationSystem &system) {
         this->flights = system.flights;
         this->users = system.users;
     }
     //operator =
+//    ReservationSystem& operator=(const ReservationSystem& system)
+//    {
+//        this->flights = system.flights;
+//        this->users = system.users;
+//        return *this;
+//    }
     ReservationSystem& operator=(const ReservationSystem& system)
-    {
-        this->flights = system.flights;
-        this->users = system.users;
-        return *this;
-    }
+    = default;
     //destructor
     ~ReservationSystem() = default;
     //metoda adaugare user
