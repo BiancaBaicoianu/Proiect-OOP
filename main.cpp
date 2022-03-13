@@ -29,7 +29,7 @@ public:
     }
 
     //metoda
-    void verify_user(const User& user_) {
+    static void verify_user(const User& user_) {
         if (return_passportNo(user_).size() < 9)
             std::cout << "You entered an invalid passport number for " << user_ << endl;
         if (return_phoneNo(user_).size() != 10)
@@ -169,7 +169,7 @@ public:
 std::ostream& operator<<(std::ostream &strm, const Flight &a) {
     strm << "Flight = (" << a.departure << ", " << a.destination << ", " << a.planeType << ", " << a.duration << ", Seats = {";
 
-    for (FlightSeat seat : a.seats) {
+    for (const FlightSeat& seat : a.seats) {
         strm << seat << ",";
     }
     strm << "})";
@@ -199,14 +199,13 @@ public:
         return *this;
     }
     //destructor
-    ~ReservationSystem() {
-    }
+    ~ReservationSystem() = default;
     //metoda adaugare user
-    void addUser(User user) {
+    void addUser(const User& user) {
         users.push_back(user);
     }
     //metoda adaugare zbor
-    void addFlight(Flight flight) {
+    void addFlight(const Flight& flight) {
         flights.push_back(flight);
     }
 };
@@ -214,11 +213,11 @@ public:
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const ReservationSystem &a) {
     strm << "Flights: ";
-    for (Flight flight : a.flights) {
+    for (const Flight& flight : a.flights) {
         strm << flight << endl;
     }
     strm << "User: ";
-    for (User user : a.users) {
+    for (const User& user : a.users) {
         strm << user << endl;
     }
     return strm;
@@ -230,11 +229,11 @@ int main() {
     //economy = 1 ; bussiness = 0
     std::vector<FlightSeat> flightSeats;
     User user1("Popescu Ion", "popescuion@gmail.com", 32, "0724660071", "006376162");
-    user1.verify_user(user1);
+    User::verify_user(user1);
     User user2("Andronescu Maria Elena", "mariaaaa_elena@yahoo.com", 22, "0726315643", "0031764");
-    user2.verify_user(user2);
+    User::verify_user(user2);
     User user3("Marinescu Rebeca", "rebek_marinescu@gmail.com", 28, "07632032242", "0031249626");
-    user3.verify_user(user3);
+    User::verify_user(user3);
 
     FlightSeat fs1(012, 1, false, user1);
     if (fs1.bookSeat(user1) == -1)
