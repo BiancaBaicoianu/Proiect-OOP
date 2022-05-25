@@ -1,157 +1,29 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
-class User {
-    std::string name;
-    std::string email;
-    int age{};
-    std::string phoneNo;
-    std::string passportNo;
-
-    friend std::ostream& operator<<(std::ostream &strm, const User &user);
-
-public:
-    [[nodiscard]] std::string getPassportNo() const {
-        return passportNo;
-    }
-    [[nodiscard]] std::string getPhoneNo() const {
-        return phoneNo;
-    }
-
-    User()= default;
-    //constructor de initializare
-    User(const std::string& name, const std::string& email, int age, const std::string& phoneNo, const std::string& passportNo) {
-        this->name = name;
-        this->email = email;
-        this->age = age;
-        this->phoneNo = phoneNo;
-        this->passportNo = passportNo;
-    }
-
-    //metoda
-    void verify_user() const{
-        if ((*this).getPassportNo().size() < 9)
-            std::cout << "You entered an invalid passport number for " << (*this) << std::endl;
-        if ((*this).getPhoneNo().size() != 10)
-            std::cout << "You entered an invalid phone number for " <<(*this) << std::endl;
-    }
-
-    //constructor de copiere
-    User(const User &user) {
-        this->name = user.name;
-        this->email = user.email;
-        this->age = user.age;
-        this->phoneNo = user.phoneNo;
-        this->passportNo = user.passportNo;
-    }
-    //destructor
-    ~User() = default;
-
-    //operator =
-    User& operator=(const User& user)
-    {
-        this->name = user.name;
-        this->email = user.email;
-        this->age = user.age;
-        this->phoneNo = user.phoneNo;
-        this->passportNo = user.passportNo;
-        std::cout << "Operator= \n";
-        return *this;
-    }
-};
+#include "User.h"
+#include "Flight.h"
+#include "FlightSeat.h"
+#include "ReservationSystem.h"
+#include "FlightSeatType.h"
+#include "Aplicatie.h"
+#include "Exception.h"
 
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const User &user) {
     return strm << "(" << user.name << ", " << user.email << ", " << user.age << ", " << user.phoneNo << ", " << user.passportNo << ")";
 }
 
-class FlightSeat {
-private:
-    int id;
-    int type;
-    bool booked;
-
-    friend std::ostream& operator<<(std::ostream &strm, const FlightSeat &flightSeat);
-
-public:
-    //constructor de initializare
-    FlightSeat(int id, int type, bool booked, const User& pasager) {
-        this->id = id;
-        this->type = type;
-        this->booked = booked;
-        this->pasager = pasager;
-    }
-
-    FlightSeat(const FlightSeat &seat) {
-        this->type = seat.type;
-        this->booked = seat.booked;
-        this->pasager = seat.pasager;
-        this->id = seat.id;
-    }
-
-
-    //metoda
-    int bookSeat(const User& pasager_) {
-        if (booked)
-            return -1;
-        this->booked = true;
-        this->pasager = pasager_;
-        return 0;
-    }
-    //operator =
-    FlightSeat& operator=(const FlightSeat& seat)
-    = default;
-
-    User pasager;
-};
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const FlightSeat &flightseat) {
-    return strm << "(" << flightseat.type << ", " << flightseat.booked << ", " << flightseat.pasager << ")";
+    flightseat.afisare(strm);
+    return strm;
 }
 
-class Flight {
-private:
-    int flightId;
-    std::string departure;
-    std::string destination;
-    std::string planeType;
-    int duration;
-    std::vector<FlightSeat> seats;
-    int noSeats;
-    friend std::ostream& operator<<(std::ostream &strm, const Flight &flight);
-
-public:
-    //constructor de initializare
-    Flight(int flightId, const std::string& departure, const std::string& destination, const std::string& planeType, int duration, const std::vector<FlightSeat>& seats, int noSeats) {
-        this->flightId = flightId;
-        this->departure = departure;
-        this->destination = destination;
-        this->planeType = planeType;
-        this->duration = duration;
-        this->seats = seats;
-        this->noSeats = noSeats;
-    }
-    //constructor de copiere
-    Flight(const Flight &flight) {
-        this->flightId = flight.flightId;
-        this->departure = flight.departure;
-        this->destination = flight.destination;
-        this->planeType = flight.planeType;
-        this->duration = flight.duration;
-        this->seats = flight.seats;
-        this->noSeats = flight.noSeats;
-    }
-    //destructor
-    ~Flight() = default;
-
-    //operator =
-    Flight& operator=(const Flight& flight)
-    = default;
-};
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const Flight &flight) {
-    strm << "Flight = (" << flight.departure << ", " << flight.destination << ", " << flight.planeType << ", " << flight.duration << ", Seats = {";
+
+    strm << "Flight = (" << flight.departure << ", " << flight.destination << ", " << flight.duration << ", Seats = {";
 
     for (const FlightSeat& seat : flight.seats) {
         strm << seat << ",";
@@ -159,37 +31,6 @@ std::ostream& operator<<(std::ostream &strm, const Flight &flight) {
     strm << "})";
     return strm;
 }
-
-class ReservationSystem {
-private:
-    std::vector<Flight> flights;
-    std::vector<User> users;
-    friend std::ostream& operator<<(std::ostream &strm, const ReservationSystem &reserv);
-
-public:
-    //constructor de initializare
-    ReservationSystem() = default;
-    //constructor de copiere
-    ReservationSystem(const ReservationSystem &system) {
-        this->flights = system.flights;
-        this->users = system.users;
-    }
-    //operator =
-    ReservationSystem& operator=(const ReservationSystem& system)
-    = default;
-
-    //destructor
-    ~ReservationSystem() = default;
-
-    //metoda adaugare user
-    void addUser(const User& user) {
-        users.push_back(user);
-    }
-    //metoda adaugare zbor
-    void addFlight(const Flight& flight) {
-        flights.push_back(flight);
-    }
-};
 
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const ReservationSystem &reserv) {
@@ -204,42 +45,135 @@ std::ostream& operator<<(std::ostream &strm, const ReservationSystem &reserv) {
     return strm;
 }
 
-ReservationSystem reservation;
-std::vector<FlightSeat> flightSeats;
-
-
-void booking(FlightSeat fs, const Flight& f) {
-    if (fs.bookSeat(fs.pasager) == -1) {
-        std::cout << "You have already booked a seat!";
-    }
-    else {
-        flightSeats.push_back(fs);
-        reservation.addFlight(f);
-        reservation.addUser(fs.pasager);
-    }
-}
-
     int main() {
+        Aplicatie app;
+
         User user1("Popescu Ion", "popescuion@gmail.com", 32, "0724660071", "006376162");
-        user1.verify_user();
-        Flight f1(0, "SUA", "Australia", "business", 240, flightSeats, 200);
-
-        User user2("Andronescu Maria Elena", "mariaaaa_elena@yahoo.com", 22, "0726315643", "0031764");
-        user2.verify_user();
-        Flight f2(2, "Germany", "Russia", "business", 180, flightSeats, 260);
-
+        User user2("Andronescu Maria Elena", "mariaaaa_elena@yahoo.com", 49, "0726315643", "0031764");
         User user3("Marinescu Rebeca", "rebek_marinescu@gmail.com", 28, "07632032242", "0031249626");
-        user3.verify_user();
-        Flight f3(0, "SUA", "Australia", "economy", 240, flightSeats, 200);
+        User user4("Iordache Bianca Andreea", "bbiiaa_andreea@gmail.com", 19, "0763482242", "0031271234");
+        User user5("Dobre Alexandru", "dobre.alexandru@gmail.com", 7, "0763203825", "000149766");
+        User user6("Teodorescu Loredana", "lori_teodrsc@gmail.com", 25, "0703725242", "0800749626");
+        User user7("Marin Sebastian", "sebastian.marin@gmail.com", 52, "0721203224", "9131282716");
 
-        FlightSeat fs1(012, 1, false, user1);
-        booking(fs1, f1);
+        Flight f1(04263, "SUA", "Australia",  410, app.getFlightSeats(), 300);
+        Flight f2(27473, "Germany", "Russia",  320, app.getFlightSeats(), 260);
+        Flight f3(11343, "UK", "Austria", 240, app.getFlightSeats(), 180);
+        Flight f4(42783, "Spain", "Sweden", 290, app.getFlightSeats(), 240);
+        Flight f5(93894, "Italy", "Canada", 390, app.getFlightSeats(), 200);
+        swap(f3,f5);
+        swap2(f3,f5);
 
-        FlightSeat fs2(276, 0, false, user2);
-        booking(fs2, f2);
+        if(user1.verify_user() == 0) {
+            auto *fs1 = new FlightSeat(012, false, user1);
+            try {
+                if (fs1->pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs1->pasager.getName() << std::endl;
+                    app.booking(*fs1, f1);
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs1->pasager.getName() << std::endl;
+            }
+            FirstClass *fc;
+            fc = dynamic_cast<FirstClass *>(fs1);
+            fc->message();  // NOLINT(readability-static-accessed-through-instance)
+        }
 
-        FlightSeat fs3(012, 1, true, user3);
-        booking(fs3, f3);
+        if(user2.verify_user() == 0) {
+            Economy fs2(276, false, user2);
+            try {
+                if (fs2.pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs2.pasager.getName() << std::endl;
+                    app.booking(fs2, f2); // NOLINT(cppcoreguidelines-slicing)
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs2.pasager.getName() << std::endl;
+            }
+        }
 
-        std::cout << reservation << std::endl;
+        if(user3.verify_user() == 0) {
+            FirstClass fs3(012, true, user3);
+            try {
+                if (fs3.pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs3.pasager.getName() << std::endl;
+                    app.booking(fs3, f1); // NOLINT(cppcoreguidelines-slicing)
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs3.pasager.getName() << std::endl;
+            }
+        }
+
+        if(user4.verify_user() == 0) {
+            Business fs4(012, false, user4);
+            try {
+                if (fs4.pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs4.pasager.getName() << std::endl;
+                    app.booking(fs4, f3); // NOLINT(cppcoreguidelines-slicing)
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs4.pasager.getName() << std::endl;
+            }
+        }
+
+
+        if(user5.verify_user() == 0) {
+            Business fs5(012, false, user5);
+
+            try {
+                if (fs5.pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs5.pasager.getName();
+                    app.booking(fs5, f4); // NOLINT(cppcoreguidelines-slicing)
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs5.pasager.getName() << std::endl;
+            }
+
+        }
+
+        if(user6.verify_user() == 0) {
+            FlightSeat fs6(012, false, user6);
+            try {
+                if (fs6.pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs6.pasager.getName() << std::endl;
+                    app.booking(fs6, f5);
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs6.pasager.getName() << std::endl;
+            }
+        }
+
+        if(user7.verify_user() == 0) {
+            FlightSeat fs7(012, false, user7);
+            try {
+                if (fs7.pasager.getAge() >= 16) {
+                    std::cout << "Access granted for " << fs7.pasager.getName() << std::endl;
+                    app.booking(fs7, f3);
+                } else {
+                    throw Exception();
+                }
+            }
+            catch (Exception &exp) {
+                std::cout << exp.what() << fs7.pasager.getName() << std::endl;
+            }
+        }
+
+        std::cout << app.getReservation() << std::endl;
     }
