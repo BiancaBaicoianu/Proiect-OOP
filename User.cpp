@@ -2,37 +2,24 @@
 #include <string>
 #include <iostream>
 #include "User.h"
+#include "Exception.h"
 
+User::User()= default;
 
-    User::User()= default;
-
-    const std::string &User::getName() const {
-        return name;
-    }
-    const std::string &User::getPassportNo() const{
-        return passportNo;
-    }
-    const std::string &User::getPhoneNo() const{
-        return phoneNo;
-    }
-    const int &User::getAge() const {
-        return age;
-    }
-
-int User::verify_user() const {
-    int valid = 0;
-    if ((*this).getPassportNo().size() < 9){
-        std::cout << "You entered an invalid passport number for " << (*this) << std::endl;
-        valid = 1;
-    }
-    if ((*this).getPhoneNo().size() != 10) {
-        std::cout << "You entered an invalid phone number for " << (*this) << std::endl;
-        valid = 1;
-    }
-    return valid;
+const std::string &User::getName() const {
+    return name;
 }
+//const std::string &User::getPassportNo() const{
+//    return passportNo;
+//}
+//const std::string &User::getPhoneNo() const{
+//    return phoneNo;
+//}
+//const int &User::getAge() const {
+//    return age;
+//}
 
-
+//cc
 User::User(const User &user) {
     this->name = user.name;
     this->email = user.email;
@@ -43,6 +30,7 @@ User::User(const User &user) {
 
 
 User &User::operator=(const User &user) {
+
     this->name = user.name;
     this->email = user.email;
     this->age = user.age;
@@ -55,9 +43,19 @@ User &User::operator=(const User &user) {
 
 User::User(const std::string &name, const std::string &email, int age, const std::string &phoneNr,
            const std::string &passportNr) {
+    if (age < 16)
+        throw AgeException(name);
+
+    if (passportNr.size() < 9)
+        throw PassportException(name);
+
+    if (phoneNr.size() != 10)
+        throw PhoneNumberException(name);
+
     this->name = name;
     this->email = email;
     this->age = age;
     this->phoneNo = phoneNr;
     this->passportNo = passportNr;
 }
+

@@ -17,17 +17,15 @@ class User {
 public:
     User();
 
+
     [[nodiscard]] const std::string &getName() const;
-    [[nodiscard]] const std::string &getPassportNo() const;
-    [[nodiscard]] const std::string &getPhoneNo() const;
-    [[nodiscard]] const int & getAge() const;
+//    [[nodiscard]] const std::string &getPassportNo() const;
+//    [[nodiscard]] const std::string &getPhoneNo() const;
+//    [[nodiscard]] const int & getAge() const;
 
 
     //constructor de initializare
     User(const std::string& name, const std::string& email, int age, const std::string& phoneNr, const std::string& passportNr);
-
-    //metoda
-     [[nodiscard]] int verify_user() const;
 
     //constructor de copiere
     User(const User &user) ;

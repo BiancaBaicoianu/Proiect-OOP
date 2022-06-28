@@ -25,14 +25,10 @@ public:
     //constructor de copiere
     Flight(const Flight &flight);
 
+    ~Flight() = default;
+
     friend void swap(Flight& f1, Flight& f2){
         std::swap(f1.destination, f2.departure);
-    };
-
-    std::vector<std::shared_ptr<Flight>>flights;
-
-    friend void swap2(Flight& f1, Flight& f2){
-        std::swap(f1.flights, f2.flights);
     };
 
     //operator =

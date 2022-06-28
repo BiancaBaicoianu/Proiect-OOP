@@ -30,6 +30,8 @@ public:
     virtual ~Business() = default;
 
     [[nodiscard]] virtual std:: shared_ptr <FlightSeat> clone() const ;
+
+    static void message() ;
 };
 
 
@@ -52,11 +54,11 @@ protected:
     void afisare(std::ostream &strm) const override;
 
 public:
-     Economy(int id, bool booked, const User &pasager) : FlightSeat(id, booked, pasager) {}
+    Economy(int id, bool booked, const User &pasager) : FlightSeat(id, booked, pasager) {}
 
-     ~Economy() = default;
+    ~Economy() = default;
 
-//    [[nodiscard]] virtual std:: shared_ptr <FlightSeat> clone() const ;
+
 };
 
 
