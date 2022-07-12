@@ -4,6 +4,7 @@
 
 //#pragma once
 #include "FlightSeat.h"
+#include "AirlineCompany.h"
 #include <memory>
 #include <vector>
 
@@ -17,7 +18,10 @@ private:
     int noSeats;
 
 public:
+
     friend std::ostream& operator<<(std::ostream &strm, const Flight &flight);
+
+    [[nodiscard]] const std::string &getDestination() const;
 
     //constructor de initializare
     Flight(int flightId, const std::string& departure, const std::string& destination, int duration, const std::vector<FlightSeat>& seats, int noSeats);
@@ -38,5 +42,6 @@ public:
         return *this;
     }
 };
+
 
 #endif //OOP_FLIGHT_H

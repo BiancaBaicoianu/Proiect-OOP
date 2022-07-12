@@ -7,6 +7,9 @@
 #include "ReservationSystem.h"
 #include "FlightSeatType.h"
 #include "Aplicatie.h"
+#include "CoVidPolicy.h"
+#include "AirlineCompany.h"
+#include "Payment.h"
 //#include "Exception.h"
 
 //operator <<
@@ -34,11 +37,11 @@ std::ostream& operator<<(std::ostream &strm, const Flight &flight) {
 
 //operator <<
 std::ostream& operator<<(std::ostream &strm, const ReservationSystem &reserv) {
-    strm << "Flights: ";
+    std::cout<<"_____________________FLIGHTS________________________"<<std::endl;
     for (const Flight& flight : reserv.flights) {
         strm << flight << std::endl;
     }
-    strm << "User: ";
+    std::cout<<"_______________________USERS________________________"<<std::endl;
     for (const User& user : reserv.users) {
         strm << user << std::endl;
     }
@@ -50,6 +53,22 @@ int main() {
     Aplicatie app;
 
     try {
+        std::cout<<"____________________________COMPANIES_______________"<<std::endl;
+        ChooseCompany chs_company{};
+        WizzAirBuilder wizz;
+        RyanAirBuilder ryan;
+        BlueAirBuilder blue;
+        FlyDubaiBuilder fly_dubai;
+
+        chs_company.chooseAirlineComapny(&wizz);
+        chs_company.openAirlineCompany();
+        chs_company.chooseAirlineComapny(&ryan);
+        chs_company.openAirlineCompany();
+        chs_company.chooseAirlineComapny(&blue);
+        chs_company.openAirlineCompany();
+        chs_company.chooseAirlineComapny(&fly_dubai);
+        chs_company.openAirlineCompany();
+        std::cout<<"____________________________________________________"<<std::endl;
 
         User user1("Popescu Ion", "popescuion@gmail.com", 32, "0724660071", "006376162");
         User user2("Andronescu Maria Elena", "mariaaaa_elena@yahoo.com", 49, "0726315643", "002231764");
@@ -67,10 +86,18 @@ int main() {
 
         //FS 1
         FlightSeat fs1(012, false, user1);
+        //TEMPLATE
+        CoVidPolicy<bool> R1(false);
+        R1.setRestrictions(f1.getDestination());
+        std::cout<< R1.isRestrictions();
         app.booking(fs1, f1);
 
         //FS2
         Economy fs2(276, false, user2);
+        //TEMPLATE
+        CoVidPolicy<bool> R2(false);
+        R1.setRestrictions(f2.getDestination());
+        std::cout<< R2.isRestrictions();
         app.booking(fs2, f2); // NOLINT(cppcoreguidelines-slicing)
 
         //FS3
@@ -93,11 +120,17 @@ int main() {
 
         std::cout << app.getReservation() << std::endl;
 
+
         User user7("Marin Sebastian", "sebastian.marin@gmail.com", 52, "0721203224", "91312871");
         User user8("Marin Gigel", "sebastian.gigel@gmail.com", 58, "072103224", "913132871");
 
+
     } catch (std::runtime_error &e) {
+        std::cout<<"_____________________REJECTED USERS_________________"<<std::endl;
         std::cout << e.what() << std::endl;
     }
 
+
+    Facade facade("EA21984284782", "ron", 320);
+    facade.start();
 }

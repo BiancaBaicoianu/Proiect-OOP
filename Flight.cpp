@@ -1,5 +1,10 @@
 #include "Flight.h"
 
+
+const std::string &Flight::getDestination() const {
+    return destination;
+}
+
 Flight::Flight(const Flight &flight) {
     this->flightId = flight.flightId;
     this->departure = flight.departure;
